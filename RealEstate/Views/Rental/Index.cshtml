@@ -1,65 +1,64 @@
-﻿@model RealEstate.Rentals.PostRental
+﻿@model RealEstate.Rentals.RentalsList
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Rental Listings</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+    <label for="PriceLimit">Price Limit</label>
+    <input type="text" name="PriceLimit" value="@Model.Filters.PriceLimit"/>
     
-    <div class="form-horizontal">
-        <h4>PostRental</h4>
-        <hr />
-        @Html.ValidationSummary(true)
+    <label for="MinimumRooms">Minimum Rooms</label>
+    <input type="text" name="MinimumRooms" value="@Model.Filters.MinimumRooms"/>
+    <input type="submit" value="search"/>
+}
+<p>
+    @Html.ActionLink("Post Rental", "Post")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Description
+        </th>
+        <th>
+            Number of Rooms
+        </th>
+        <th>
+            Address
+        </th>
+        <th>Price</th>
+        <th>Adjustments</th>
+        <th></th>
+        <th></th>
+    </tr>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NumberOfRooms, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NumberOfRooms)
-                @Html.ValidationMessageFor(model => model.NumberOfRooms)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Address)
-                @Html.ValidationMessageFor(model => model.Address)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+@foreach (var rental in Model.Rentals) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => rental.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => rental.NumberOfRooms)
+        </td>
+        <td>
+            @rental.Address.First()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => rental.Price)
+        </td>
+        <td>
+            @rental.Adjustments.Select(a => a.Describe()).LastOrDefault()
+        </td>
+        <td>
+            @Html.ActionLink("Adjust Price", "AdjustPrice", new { id = rental.Id})
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id = rental.Id })
+        </td>
+    </tr>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+</table>
