@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 using RealEstate.Database;
 using RealEstate.Rentals;
@@ -96,6 +97,73 @@ namespace RealEstate.Controllers
             Context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
 
             return RedirectToAction("Index");
+        }
+
+        public string PriceDistribution()
+        {
+            return new QuerPriceDistribution()
+                .Run(Context.Rentals)
+                .ToJson();
+        }
+
+        public ActionResult AttachImage(string id)
+        {
+            var rental = GetRental(id);
+            return View(rental);
+        }
+
+        [HttpPost]
+        public ActionResult AttachImage(string id, HttpPostedFileBase file)
+        {
+            var rental = GetRental(id);
+
+            if (rental.HasImage())
+            {
+                DeleteImage(rental);
+            }
+
+            UploadImage(file, rental);
+
+            return RedirectToAction("Index");
+        }
+
+        private void DeleteImage(Rental rental)
+        {
+            Context.Db.GridFS.DeleteById(new ObjectId(rental.ImageId));
+
+            rental.ImageId = null;
+
+            Context.Rentals.Save(rental);
+        }
+
+        private void UploadImage(HttpPostedFileBase file, Rental rental)
+        {
+            var imageId = ObjectId.GenerateNewId();
+
+            rental.ImageId = imageId.ToString();
+
+            Context.Rentals.Save(rental);
+
+            var options = new MongoGridFSCreateOptions
+            {
+                Id = imageId,
+                ContentType = file.ContentType
+            };
+
+            Context.Db.GridFS.Upload(file.InputStream, file.FileName, options);
+        }
+
+        public ActionResult GetImage(string id)
+        {
+            var image = Context.Db.GridFS
+                .FindOneById(new ObjectId(id));
+
+            if (image == null)
+            {
+                return HttpNotFound();
+            }
+
+            return File(image.OpenRead(), image.ContentType);
         }
     }
 }

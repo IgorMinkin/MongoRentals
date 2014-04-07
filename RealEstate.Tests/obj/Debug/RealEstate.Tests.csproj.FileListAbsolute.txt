@@ -23,3 +23,8 @@ c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\System.Web.Razor.xml
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\System.Web.WebPages.Razor.xml
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\System.Web.WebPages.xml
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\WebGrease.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Newtonsoft.Json.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Antlr3.Runtime.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Newtonsoft.Json.xml
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Antlr3.Runtime.pdb

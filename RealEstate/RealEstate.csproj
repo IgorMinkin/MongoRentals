@@ -123,6 +123,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Rentals\QuerPriceDistribution.cs" />
     <Compile Include="Controllers\RentalController.cs" />
     <Compile Include="Database\RealEstateContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -179,6 +180,7 @@
     <Content Include="Views\Rental\Post.cshtml" />
     <Content Include="Views\Rental\Index.cshtml" />
     <Content Include="Views\Rental\AdjustPrice.cshtml" />
+    <Content Include="Views\Rental\AttachImage.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
