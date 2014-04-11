@@ -1,0 +1,6 @@
+﻿@model RealEstate.Models.AppSettings
+
+<script type="text/javascript">
+    var RentalApp = RentalApp || {};
+    RentalApp.ApplicationSettings = @Html.Raw(Model.ToJSON());
+</script>
