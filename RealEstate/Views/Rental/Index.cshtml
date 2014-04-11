@@ -92,24 +92,27 @@
             var container = $('#expensiveRentals'),
                 templateSource = $('#rentalListTemplate').html(),
                 template = Handlebars.compile(templateSource),
-                updateTopRentals = function () {
-                    $.get('/RealEstate/Rental/List').then(function (resp) {
-                        var topRentals = _.first(resp, parseInt(settings.TopRentalsToShow));
-                        container.append(template({ rentals: topRentals }));
-                    });
+                getTopRentals = function() {
+                    return $.get('/RealEstate/Rental/List');
+                },
+                renderTopRentals = function(rentals) {
+                    var topRentals = _.first(rentals, parseInt(settings.TopRentalsToShow));
+                    container.append(template({ rentals: topRentals }));
+                },
+                initializeHub = function() {
+                    var hub = $.connection.rentalHub;
+                    hub.client.rentalAdded = function () {
+                        toastr.info('top rentals updated');
+                        container.html('');
+                        getTopRentals().then(renderTopRentals);
+                    };
+
+                    $.connection.hub.start();
                 };
 
             $(function() {
-                var hub = $.connection.rentalHub;
-                hub.client.rentalAdded = function() {
-                    toastr.info('top rentals updated');
-                    container.html('');
-                    updateTopRentals();
-                };
-
-                $.connection.hub.start();
-
-                updateTopRentals();
+                initializeHub();
+                getTopRentals().then(renderTopRentals);
             });
             
 
