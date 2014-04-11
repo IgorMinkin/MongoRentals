@@ -1,9 +1,15 @@
-﻿@model RealEstate.Rentals.RentalsList
+﻿@using RealEstate.Rentals
+
+@model RentalsList
 
 @{
     ViewBag.Title = "Index";
 }
 
+@helper DescribeLastAdjustment(List<PriceAdjustment> adjustments)
+{
+    <span>@adjustments.Select(a => a.Describe()).LastOrDefault()</span>
+}
 
 <h2>Most Expensive Rentals</h2>
 
@@ -48,6 +54,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => rental.Description)
+                <p>
+                    <a href="@Url.Action("Rental", new {id = rental.Id})">@Url.Action("Rental", new { id = rental.Id })</a>
+                </p>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => rental.NumberOfRooms)
@@ -59,10 +68,11 @@
                 @Html.DisplayFor(modelItem => rental.Price)
             </td>
             <td>
-                @rental.Adjustments.Select(a => a.Describe()).LastOrDefault()
+                @DescribeLastAdjustment(rental.Adjustments)
+                @*@rental.Adjustments.Select(a => a.Describe()).LastOrDefault()*@
             </td>
             <td>
-                @Html.ActionLink("Adjust Price", "AdjustPrice", new {id = rental.Id})
+                @Html.ActionLink("Adjust Price", "AdjustPrice", new {id = rental.Id}, new {data_color="red"})
             </td>
             <td>
                 @Html.ActionLink("Image", "AttachImage", new {id = rental.Id})
@@ -83,9 +93,9 @@
                 templateSource = $('#rentalListTemplate').html(),
                 template = Handlebars.compile(templateSource);
 
-            $.get('/RealEstate/Rental/List').then(function(resp) {
-                console.log(resp);
-                container.append(template({ rentals: resp }));
+            $.get('/RealEstate/Rental/List').then(function (resp) {
+                var topRentals = _.first(resp, parseInt(settings.TopRentalsToShow));
+                container.append(template({ rentals: topRentals }));
             });
 
 

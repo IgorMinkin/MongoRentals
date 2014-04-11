@@ -172,6 +172,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -194,6 +196,7 @@
     <Content Include="Views\Rental\AttachImage.cshtml" />
     <Content Include="Views\Settings\GetSettings.cshtml" />
     <Content Include="Views\Templates\_RentalsList.cshtml" />
+    <Content Include="Scripts\underscore.min.map" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

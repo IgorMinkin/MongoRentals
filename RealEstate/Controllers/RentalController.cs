@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -36,7 +37,6 @@ namespace RealEstate.Controllers
             var mostExpensive =
                 Context.Rentals.AsQueryable()
                     .OrderByDescending(r => r.Price)
-                    .Take(3)
                     .Select(r => new {r.Price, r.Description, r.NumberOfRooms});
 
             return Json(mostExpensive, JsonRequestBehavior.AllowGet);
@@ -83,6 +83,12 @@ namespace RealEstate.Controllers
         {
             var rental = GetRental(id);
             return View(rental);
+        }
+
+        public JsonResult Rental(string id)
+        {
+            var rental = GetRental(id);
+            return Json(rental, JsonRequestBehavior.AllowGet);
         }
 
         private Rental GetRental(string id)
