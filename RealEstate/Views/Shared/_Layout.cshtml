@@ -43,6 +43,7 @@
     @Scripts.Render("~/Scripts/handlebars.js")
     @Scripts.Render("~/Scripts/toastr.js")
     @{ Html.RenderAction("Get", "Settings");}
+    @RenderSection("templates", required: false)
     @RenderSection("scripts", required: false)
 
 </body>
