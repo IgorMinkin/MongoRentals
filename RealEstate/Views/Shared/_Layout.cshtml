@@ -4,8 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - MVC Rentals</title>
-    @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/css")
+    <link href="~/Content/toastr.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -35,8 +37,11 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.signalR-2.0.3.js")
+    @Scripts.Render("~/signalr/hubs")
     @Scripts.Render("~/Scripts/underscore.js")
     @Scripts.Render("~/Scripts/handlebars.js")
+    @Scripts.Render("~/Scripts/toastr.js")
     @{ Html.RenderAction("Get", "Settings");}
     @RenderSection("scripts", required: false)
 

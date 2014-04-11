@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.SignalR;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 using RealEstate.Database;
+using RealEstate.Hubs;
 using RealEstate.Rentals;
 
 namespace RealEstate.Controllers
@@ -17,6 +19,7 @@ namespace RealEstate.Controllers
     public class RentalController : Controller
     {
         public readonly RealEstateContext Context = new RealEstateContext();
+        private readonly static Lazy<IHubContext> RentalHub = new Lazy<IHubContext>(() => GlobalHost.ConnectionManager.GetHubContext<RentalHub>()); 
         //
         // GET: /Rentals/
         public ActionResult Index(RentalsFilter filters)
@@ -76,6 +79,8 @@ namespace RealEstate.Controllers
 
             Context.Rentals.Insert(rental);
 
+            RentalHub.Value.Clients.All.rentalAdded();
+
             return RedirectToAction("Index");
         }
 
@@ -112,6 +117,8 @@ namespace RealEstate.Controllers
         public ActionResult Delete(string id)
         {
             Context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
+
+            RentalHub.Value.Clients.All.rentalAdded();
 
             return RedirectToAction("Index");
         }

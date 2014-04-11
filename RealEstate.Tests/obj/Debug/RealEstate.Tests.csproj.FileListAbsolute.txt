@@ -28,3 +28,8 @@ c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Newtonsoft.Json.dll
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Antlr3.Runtime.dll
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Newtonsoft.Json.xml
 c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Antlr3.Runtime.pdb
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Owin.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Microsoft.Owin.dll
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+c:\Projects\RealEstate\RealEstate.Tests\bin\Debug\Microsoft.Owin.xml

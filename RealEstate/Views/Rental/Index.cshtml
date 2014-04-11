@@ -88,15 +88,30 @@
 @section scripts
 {
     <script>
-        (function(settings) {
+        (function (settings) {
             var container = $('#expensiveRentals'),
                 templateSource = $('#rentalListTemplate').html(),
-                template = Handlebars.compile(templateSource);
+                template = Handlebars.compile(templateSource),
+                updateTopRentals = function () {
+                    $.get('/RealEstate/Rental/List').then(function (resp) {
+                        var topRentals = _.first(resp, parseInt(settings.TopRentalsToShow));
+                        container.append(template({ rentals: topRentals }));
+                    });
+                };
 
-            $.get('/RealEstate/Rental/List').then(function (resp) {
-                var topRentals = _.first(resp, parseInt(settings.TopRentalsToShow));
-                container.append(template({ rentals: topRentals }));
+            $(function() {
+                var hub = $.connection.rentalHub;
+                hub.client.rentalAdded = function() {
+                    toastr.info('top rentals updated');
+                    container.html('');
+                    updateTopRentals();
+                };
+
+                $.connection.hub.start();
+
+                updateTopRentals();
             });
+            
 
 
         })(RentalApp.ApplicationSettings);
