@@ -1,0 +1,18 @@
+http://odetocode.com/blogs/scott/archive/2013/01/09/ten-tricks-for-razor-views.aspx
+
+1. Code blocks and variables
+
+2. Mixing code and text within code blocks
+
+3. Generating URL's using routing engine
+
+4. Adding html attributes to DOM elements generated with HTML helpers
+
+5. Inline html helpers
+
+6. Bootstrap server side app settings to javascript using MVC child action (render action)
+
+7. Include client-side templates using MVC server side partial views
+
+8. SignalR ??
+
