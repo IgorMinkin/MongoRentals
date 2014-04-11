@@ -34,10 +34,11 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-    @{ Html.RenderAction("Get", "Settings");}
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/handlebars.js")
+    @{ Html.RenderAction("Get", "Settings");}
     @RenderSection("scripts", required: false)
- 
+
 </body>
 </html>

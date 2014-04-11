@@ -4,13 +4,20 @@
     ViewBag.Title = "Index";
 }
 
+
+<h2>Most Expensive Rentals</h2>
+
+<div id="expensiveRentals">
+    
+</div>
+
 <h2>Rental Listings</h2>
 
 @using (Html.BeginForm())
 {
     <label for="PriceLimit">Price Limit</label>
     <input type="text" name="PriceLimit" value="@Model.Filters.PriceLimit"/>
-    
+
     <label for="MinimumRooms">Minimum Rooms</label>
     <input type="text" name="MinimumRooms" value="@Model.Filters.MinimumRooms"/>
     <input type="submit" value="search"/>
@@ -36,7 +43,8 @@
         <th></th>
     </tr>
 
-    @foreach (var rental in Model.Rentals) {
+    @foreach (var rental in Model.Rentals)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => rental.Description)
@@ -54,13 +62,13 @@
                 @rental.Adjustments.Select(a => a.Describe()).LastOrDefault()
             </td>
             <td>
-                @Html.ActionLink("Adjust Price", "AdjustPrice", new { id = rental.Id})
+                @Html.ActionLink("Adjust Price", "AdjustPrice", new {id = rental.Id})
             </td>
             <td>
                 @Html.ActionLink("Image", "AttachImage", new {id = rental.Id})
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = rental.Id })
+                @Html.ActionLink("Delete", "Delete", new {id = rental.Id})
             </td>
         </tr>
     }
@@ -71,7 +79,18 @@
 {
     <script>
         (function(settings) {
-            console.log(settings);
+            var container = $('#expensiveRentals'),
+                templateSource = $('#rentalListTemplate').html(),
+                template = Handlebars.compile(templateSource);
+
+            $.get('/RealEstate/Rental/List').then(function(resp) {
+                console.log(resp);
+                container.append(template({ rentals: resp }));
+            });
+
+
         })(RentalApp.ApplicationSettings);
     </script>
 }
+
+@Html.Partial("~/Views/Templates/_RentalsList.cshtml")

@@ -1,0 +1,26 @@
+﻿<script id="rentalListTemplate" type="text/x-handlebars-template">
+    <table class="table">
+    <tr>
+        <th>
+            Description
+        </th>
+        <th>
+            Number of Rooms
+        </th>
+        <th>Price</th>
+    </tr>
+        {{#each rentals}}
+        <tr>
+            <td>
+                {{Description}}
+            </td>
+            <td>
+                {{NumberOfRooms}}
+            </td>
+            <td>
+                {{Price}}
+            </td>           
+        </tr>
+       {{/each}}
+    </table>
+</script>

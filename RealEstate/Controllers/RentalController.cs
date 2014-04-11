@@ -31,6 +31,17 @@ namespace RealEstate.Controllers
             return View(model);
         }
 
+        public JsonResult List()
+        {
+            var mostExpensive =
+                Context.Rentals.AsQueryable()
+                    .OrderByDescending(r => r.Price)
+                    .Take(3)
+                    .Select(r => new {r.Price, r.Description, r.NumberOfRooms});
+
+            return Json(mostExpensive, JsonRequestBehavior.AllowGet);
+        }
+
         private IEnumerable<Rental> FilterRentals(RentalsFilter filters)
         {
             IQueryable<Rental> rentals = Context.Rentals.AsQueryable()
