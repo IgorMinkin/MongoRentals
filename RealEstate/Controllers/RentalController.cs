@@ -18,8 +18,14 @@ namespace RealEstate.Controllers
 {
     public class RentalController : Controller
     {
-        public readonly RealEstateContext Context = new RealEstateContext();
-        private readonly static Lazy<IHubContext> RentalHub = new Lazy<IHubContext>(() => GlobalHost.ConnectionManager.GetHubContext<RentalHub>()); 
+        private readonly RealEstateContext _context;
+        private readonly static Lazy<IHubContext> RentalHub = new Lazy<IHubContext>(() => GlobalHost.ConnectionManager.GetHubContext<RentalHub>());
+
+        public RentalController(RealEstateContext context)
+        {
+            _context = context;
+        }
+        
         //
         // GET: /Rentals/
         public ActionResult Index(RentalsFilter filters)
@@ -38,7 +44,7 @@ namespace RealEstate.Controllers
         public JsonResult List()
         {
             var mostExpensive =
-                Context.Rentals.AsQueryable()
+                _context.Rentals.AsQueryable()
                     .OrderByDescending(r => r.Price)
                     .Select(r => new {r.Price, r.Description, r.NumberOfRooms});
 
@@ -47,7 +53,7 @@ namespace RealEstate.Controllers
 
         private IEnumerable<Rental> FilterRentals(RentalsFilter filters)
         {
-            IQueryable<Rental> rentals = Context.Rentals.AsQueryable()
+            IQueryable<Rental> rentals = _context.Rentals.AsQueryable()
                 .OrderBy(r => r.Price);
 
             if (filters.MinimumRooms.HasValue)
@@ -77,7 +83,7 @@ namespace RealEstate.Controllers
         {
             var rental = new Rental(postRental);
 
-            Context.Rentals.Insert(rental);
+            _context.Rentals.Insert(rental);
 
             RentalHub.Value.Clients.All.rentalAdded();
 
@@ -90,7 +96,7 @@ namespace RealEstate.Controllers
             return View(rental);
         }
 
-        public JsonResult Rental(string id)
+        public JsonResult Json(string id)
         {
             var rental = GetRental(id);
             return Json(rental, JsonRequestBehavior.AllowGet);
@@ -98,7 +104,7 @@ namespace RealEstate.Controllers
 
         private Rental GetRental(string id)
         {
-            var rental = Context.Rentals.FindOneById(new ObjectId(id));
+            var rental = _context.Rentals.FindOneById(new ObjectId(id));
             return rental;
         }
 
@@ -109,14 +115,14 @@ namespace RealEstate.Controllers
 
             rental.AdjustPrice(adjustPrice);
 
-            Context.Rentals.Save(rental);
+            _context.Rentals.Save(rental);
 
             return RedirectToAction("Index");
         }
 
         public ActionResult Delete(string id)
         {
-            Context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
+            _context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
 
             RentalHub.Value.Clients.All.rentalAdded();
 
@@ -126,7 +132,7 @@ namespace RealEstate.Controllers
         public string PriceDistribution()
         {
             return new QuerPriceDistribution()
-                .Run(Context.Rentals)
+                .Run(_context.Rentals)
                 .ToJson();
         }
 
@@ -153,11 +159,11 @@ namespace RealEstate.Controllers
 
         private void DeleteImage(Rental rental)
         {
-            Context.Db.GridFS.DeleteById(new ObjectId(rental.ImageId));
+            _context.Db.GridFS.DeleteById(new ObjectId(rental.ImageId));
 
             rental.ImageId = null;
 
-            Context.Rentals.Save(rental);
+            _context.Rentals.Save(rental);
         }
 
         private void UploadImage(HttpPostedFileBase file, Rental rental)
@@ -166,7 +172,7 @@ namespace RealEstate.Controllers
 
             rental.ImageId = imageId.ToString();
 
-            Context.Rentals.Save(rental);
+            _context.Rentals.Save(rental);
 
             var options = new MongoGridFSCreateOptions
             {
@@ -174,12 +180,12 @@ namespace RealEstate.Controllers
                 ContentType = file.ContentType
             };
 
-            Context.Db.GridFS.Upload(file.InputStream, file.FileName, options);
+            _context.Db.GridFS.Upload(file.InputStream, file.FileName, options);
         }
 
         public ActionResult GetImage(string id)
         {
-            var image = Context.Db.GridFS
+            var image = _context.Db.GridFS
                 .FindOneById(new ObjectId(id));
 
             if (image == null)

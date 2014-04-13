@@ -39,3 +39,15 @@ c:\Projects\RealEstate\RealEstate\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
 c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.xml
 c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Host.SystemWeb.xml
 c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Security.xml
+c:\Projects\RealEstate\RealEstate\bin\Autofac.dll
+c:\Projects\RealEstate\RealEstate\bin\Autofac.Integration.Mvc.dll
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.AspNet.Identity.Core.dll
+c:\Projects\RealEstate\RealEstate\bin\Autofac.xml
+c:\Projects\RealEstate\RealEstate\bin\Autofac.Integration.Mvc.xml
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.AspNet.Identity.Core.xml
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.AspNet.Identity.Owin.dll
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Security.Cookies.dll
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Security.OAuth.dll
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.AspNet.Identity.Owin.xml
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Security.Cookies.xml
+c:\Projects\RealEstate\RealEstate\bin\Microsoft.Owin.Security.OAuth.xml

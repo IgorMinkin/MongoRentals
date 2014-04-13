@@ -12,12 +12,17 @@ namespace RealEstate.Database
     {
         public readonly MongoDatabase Db;
 
-        public RealEstateContext()
+        public RealEstateContext(MongoDatabase db)
         {
-            MongoClient client = new MongoClient(Settings.Default.MongoConnectionString);
-            var server = client.GetServer();
-            Db = server.GetDatabase(Settings.Default.RealEstateDbName);
+            Db = db;
         }
+
+        //public RealEstateContext()
+        //{
+        //    MongoClient client = new MongoClient(Settings.Default.MongoConnectionString);
+        //    var server = client.GetServer();
+        //    Db = server.GetDatabase(Settings.Default.RealEstateDbName);
+        //}
 
         public MongoCollection<Rental> Rentals
         {

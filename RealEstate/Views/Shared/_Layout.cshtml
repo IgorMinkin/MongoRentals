@@ -24,6 +24,7 @@
                 <ul class="nav navbar-nav">
                     @*<li>@Html.ActionLink("Home", "Index", "Rental")</li>*@
                 </ul>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
@@ -31,7 +32,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>Free to use after @DateTime.Now.Year</p>
+            <p>Free to use <b>Forever</b></p>
         </footer>
     </div>
 
@@ -42,6 +43,7 @@
     @Scripts.Render("~/Scripts/underscore.js")
     @Scripts.Render("~/Scripts/handlebars.js")
     @Scripts.Render("~/Scripts/toastr.js")
+    @Html.Action("Get", "Settings")
     @{ Html.RenderAction("Get", "Settings");}
     @RenderSection("templates", required: false)
     @RenderSection("scripts", required: false)

@@ -13,9 +13,9 @@ namespace RealEstate.Controllers
     {
         protected readonly RealEstateContext Context;
 
-        public HomeController()
+        public HomeController(RealEstateContext context)
         {
-            Context = new RealEstateContext();
+            Context = context;
         }
 
         public ActionResult Index()
