@@ -15,18 +15,26 @@ namespace RealEstate.Rentals
         public string Description { get; set; }
         public int NumberOfRooms { get; set; }
         public List<string> Address = new List<string>();
+        public PosterIdentity Poster { get; set; }
+        public DateTime DatePosted { get; set; }
 
         public Rental()
         {
-            
+          
         }
 
-        public Rental(PostRental postRental)
+        public static Rental CreatePosting(PostRental postRental, PosterIdentity identity)
         {
-            Description = postRental.Description;
-            NumberOfRooms = postRental.NumberOfRooms;
-            Price = postRental.Price;
-            Address = (postRental.Address ?? string.Empty).Split('\n').ToList();
+            return new Rental
+            {
+                Description = postRental.Description,
+                NumberOfRooms = postRental.NumberOfRooms,
+                Price = postRental.Price,
+                Address = (postRental.Address ?? string.Empty).Split('\n').ToList(),
+                DatePosted = DateTime.Now,
+                Poster = identity
+            };
+
         }
 
         [BsonRepresentation(BsonType.Double)]
@@ -44,6 +52,8 @@ namespace RealEstate.Rentals
         }
 
         public string ImageId { get; set; }
+
+
 
         public bool HasImage()
         {

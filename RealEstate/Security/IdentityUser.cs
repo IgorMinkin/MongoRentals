@@ -13,6 +13,7 @@ namespace RealEstate.Security
         public IdentityUser()
         {
             Id = ObjectId.GenerateNewId().ToString();
+            Logins = new List<UserLoginInfo>();
         }
 
         [BsonRepresentation(BsonType.ObjectId)]
@@ -21,5 +22,7 @@ namespace RealEstate.Security
         public string UserName { get; set; }
 
         public string PasswordHash { get; set; }
+
+        public List<UserLoginInfo> Logins { get; set; }
     }
 }

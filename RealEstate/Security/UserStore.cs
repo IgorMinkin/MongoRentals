@@ -10,7 +10,8 @@ using RealEstate.Database;
 
 namespace RealEstate.Security
 {
-    public class UserStore<TUser> : IUserStore<TUser>, IUserPasswordStore<TUser> where TUser : IdentityUser
+    public class UserStore<TUser> : IUserStore<TUser>, 
+        IUserPasswordStore<TUser>, IUserLoginStore<TUser> where TUser : IdentityUser
     {
         private readonly IdentityContext _context;
 
@@ -73,6 +74,49 @@ namespace RealEstate.Security
                 throw new ArgumentNullException("user");
 
             return Task.FromResult(user.PasswordHash != null);
+        }
+
+        public Task AddLoginAsync(TUser user, UserLoginInfo login)
+        {
+            if(user == null) throw new ArgumentException("user is null");
+
+            if (!IsExistingLogin(user, login))
+            {
+                user.Logins.Add(login);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        public Task RemoveLoginAsync(TUser user, UserLoginInfo login)
+        {
+            if (user == null) throw new ArgumentException("user is null");
+
+            user.Logins.RemoveAll(l => l.LoginProvider == login.LoginProvider && l.ProviderKey == login.ProviderKey);
+
+            return Task.FromResult(0);
+        }
+
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user)
+        {
+            if (user == null) throw new ArgumentException("user is null");
+
+            return Task.FromResult(user.Logins.ToList() as IList<UserLoginInfo>);
+        }
+
+        public Task<TUser> FindAsync(UserLoginInfo login)
+        {
+            TUser user =
+                _context.Users.FindOneAs<TUser>(Query.And(Query.EQ("Logins.LoginProvider", login.LoginProvider),
+                    Query.EQ("Logins.ProviderKey", login.ProviderKey)));
+
+            return Task.FromResult(user);
+        }
+
+
+        private static bool IsExistingLogin(TUser user, UserLoginInfo login)
+        {
+            return user.Logins.Any(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey);
         }
     }
 }

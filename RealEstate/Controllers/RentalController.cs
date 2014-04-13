@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -73,15 +74,21 @@ namespace RealEstate.Controllers
             return rentals;
         }
 
+        [System.Web.Mvc.Authorize]
         public ActionResult Post()
         {
             return View();
         }
 
         [HttpPost]
+        [System.Web.Mvc.Authorize]
         public ActionResult Post(PostRental postRental)
         {
-            var rental = new Rental(postRental);
+            var rental = Rental.CreatePosting(postRental, new PosterIdentity
+            {
+                Id = User.Identity.GetUserId(),
+                UserName = User.Identity.Name
+            });
 
             _context.Rentals.Insert(rental);
 

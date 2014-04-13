@@ -12,5 +12,11 @@
     <Setting Name="RealEstateDbName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">realestate</Value>
     </Setting>
+    <Setting Name="FacebookAppID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">665467910185265</Value>
+    </Setting>
+    <Setting Name="FacebookAppSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">5a18df5953cfd0f6ae317d68ce8a8634</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

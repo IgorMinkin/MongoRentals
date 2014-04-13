@@ -41,5 +41,23 @@ namespace RealEstate.Properties {
                 return ((string)(this["RealEstateDbName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("665467910185265")]
+        public string FacebookAppID {
+            get {
+                return ((string)(this["FacebookAppID"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5a18df5953cfd0f6ae317d68ce8a8634")]
+        public string FacebookAppSecret {
+            get {
+                return ((string)(this["FacebookAppSecret"]));
+            }
+        }
     }
 }
