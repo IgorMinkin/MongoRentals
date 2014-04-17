@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,24 +14,30 @@ using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 using RealEstate.Database;
 using RealEstate.Hubs;
+using RealEstate.Infrastructure.Filters;
+using RealEstate.Messaging;
 using RealEstate.Rentals;
 
 namespace RealEstate.Controllers
 {
-    public class RentalController : Controller
+    [ExtendedAuthFilter]
+    public class RentalController : ControllerBase
     {
         private readonly RealEstateContext _context;
         private readonly static Lazy<IHubContext> RentalHub = new Lazy<IHubContext>(() => GlobalHost.ConnectionManager.GetHubContext<RentalHub>());
 
-        public RentalController(RealEstateContext context)
+        public RentalController(RealEstateContext context, MessageBus messageBus) : base(messageBus)
         {
             _context = context;
         }
-        
+
         //
         // GET: /Rentals/
+        [TestActionFilter]
         public ActionResult Index(RentalsFilter filters)
         {
+            MessageBus.Publish(MessageType.C, new TestMessage(this, "hello from rental controller"));
+
             var rentals = FilterRentals(filters);
 
             var model = new RentalsList

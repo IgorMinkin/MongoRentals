@@ -17,13 +17,6 @@ namespace RealEstate.Database
             Db = db;
         }
 
-        //public RealEstateContext()
-        //{
-        //    MongoClient client = new MongoClient(Settings.Default.MongoConnectionString);
-        //    var server = client.GetServer();
-        //    Db = server.GetDatabase(Settings.Default.RealEstateDbName);
-        //}
-
         public MongoCollection<Rental> Rentals
         {
             get { return Db.GetCollection<Rental>("rentals"); }
