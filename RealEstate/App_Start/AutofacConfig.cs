@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Microsoft.AspNet.Identity;
@@ -22,12 +23,17 @@ namespace RealEstate
 
         private static void AddBindings(ContainerBuilder builder)
         {
+            string sqlConnectionString = ConfigurationManager.ConnectionStrings["RealEstateSql"].ConnectionString;
+
             builder.Register(d => MongoDbFactory.Instance);
             builder.RegisterType<RealEstateContext>().AsSelf();
             builder.RegisterType<IdentityContext>().AsSelf();
             builder.RegisterGeneric(typeof (UserManager<>)).AsSelf();
             builder.RegisterType<UserStore<IdentityUser>>().As<IUserStore<IdentityUser>>();
             builder.RegisterType<MessageBus>().AsSelf().InstancePerHttpRequest();
+            builder.RegisterType<MessageLogger>()
+                .AsSelf()
+                .WithParameter("connectionString", sqlConnectionString);
 
         }
     }

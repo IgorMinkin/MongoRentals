@@ -7,13 +7,13 @@ namespace RealEstate.Messaging
     {
         private readonly Dictionary<MessageType, List<Action<IMessage>>> _subscribers = new Dictionary<MessageType, List<Action<IMessage>>>();
 
-        public void Publish(MessageType messageType, IMessage message)
+        public void Publish(IMessage message)
         {
             if(message == null) throw new ArgumentException("null message");
 
             List<Action<IMessage>> activeSubscribers;
 
-            if(!_subscribers.TryGetValue(messageType, out activeSubscribers)) return;
+            if(!_subscribers.TryGetValue(message.MessageType, out activeSubscribers)) return;
 
             foreach (var subscriber in activeSubscribers)
             {

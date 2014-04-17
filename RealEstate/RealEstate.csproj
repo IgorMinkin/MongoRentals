@@ -177,6 +177,7 @@
     <Compile Include="Infrastructure\Filters\TestActionFilter.cs" />
     <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Messaging\MessageBus.cs" />
+    <Compile Include="Messaging\MessageLogger.cs" />
     <Compile Include="Messaging\MessageType.cs" />
     <Compile Include="Messaging\TestMessage.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

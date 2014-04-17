@@ -20,13 +20,13 @@ using RealEstate.Rentals;
 
 namespace RealEstate.Controllers
 {
-    [ExtendedAuthFilter]
     public class RentalController : ControllerBase
     {
         private readonly RealEstateContext _context;
         private readonly static Lazy<IHubContext> RentalHub = new Lazy<IHubContext>(() => GlobalHost.ConnectionManager.GetHubContext<RentalHub>());
 
-        public RentalController(RealEstateContext context, MessageBus messageBus) : base(messageBus)
+        public RentalController(RealEstateContext context, MessageBus messageBus, MessageLogger logger) 
+            : base(messageBus, logger)
         {
             _context = context;
         }
@@ -34,9 +34,10 @@ namespace RealEstate.Controllers
         //
         // GET: /Rentals/
         [TestActionFilter]
+        [ExtendedAuthFilter]
         public ActionResult Index(RentalsFilter filters)
         {
-            MessageBus.Publish(MessageType.C, new TestMessage(this, "hello from rental controller"));
+            MessageBus.Publish(new TestMessage(this, MessageType.C, "hello from rental controller"));
 
             var rentals = FilterRentals(filters);
 

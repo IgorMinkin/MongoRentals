@@ -12,9 +12,9 @@ namespace RealEstate.Infrastructure.Filters
         {
             base.OnAuthorization(filterContext);
 
-            if(!filterContext.HttpContext.User.Identity.IsAuthenticated) return;
+            MessageBus.Publish(new TestMessage(this, MessageType.B, "hello from authorization filter"));
 
-            MessageBus.Publish(MessageType.B, new TestMessage(this, "hello from authorization filter"));
+            if(!filterContext.HttpContext.User.Identity.IsAuthenticated) return;
         }
     }
 }
