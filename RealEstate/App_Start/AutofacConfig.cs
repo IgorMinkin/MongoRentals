@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Configuration;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Microsoft.AspNet.Identity;
 using RealEstate.Database;
+using RealEstate.Messaging;
 using RealEstate.Security;
 
-namespace RealEstate.App_Start
+namespace RealEstate
 {
     public class AutofacConfig
     {
@@ -17,6 +15,7 @@ namespace RealEstate.App_Start
         {
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof (MvcApplication).Assembly);
+            builder.RegisterFilterProvider();
             AddBindings(builder);
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
@@ -24,11 +23,17 @@ namespace RealEstate.App_Start
 
         private static void AddBindings(ContainerBuilder builder)
         {
+            string sqlConnectionString = ConfigurationManager.ConnectionStrings["RealEstateSql"].ConnectionString;
+
             builder.Register(d => MongoDbFactory.Instance);
             builder.RegisterType<RealEstateContext>().AsSelf();
             builder.RegisterType<IdentityContext>().AsSelf();
             builder.RegisterGeneric(typeof (UserManager<>)).AsSelf();
             builder.RegisterType<UserStore<IdentityUser>>().As<IUserStore<IdentityUser>>();
+            builder.RegisterType<MessageBus>().AsSelf().InstancePerHttpRequest();
+            builder.RegisterType<MessageLogger>()
+                .AsSelf()
+                .WithParameter("connectionString", sqlConnectionString);
 
         }
     }
