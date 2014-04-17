@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace RealEstate.Messaging
 {
     public class MessageBus
     {
-        private readonly Dictionary<MessageType, List<Action<IMessage>>> _subscribers = new Dictionary<MessageType, List<Action<IMessage>>>();
+        private readonly Dictionary<Type, List<Action<IMessage>>> _subscribers = new Dictionary<Type, List<Action<IMessage>>>();
 
         public void Publish(IMessage message)
         {
@@ -13,7 +14,7 @@ namespace RealEstate.Messaging
 
             List<Action<IMessage>> activeSubscribers;
 
-            if(!_subscribers.TryGetValue(message.MessageType, out activeSubscribers)) return;
+            if(!_subscribers.TryGetValue(message.GetType(), out activeSubscribers)) return;
 
             foreach (var subscriber in activeSubscribers)
             {
@@ -21,24 +22,17 @@ namespace RealEstate.Messaging
             }
         }
 
-        public void Subscribe(MessageType messageType, Action<IMessage> callback)
+        public void Subscribe<TMessage>(Action<IMessage> callback) where TMessage : IMessage
         {
-            AddSubscriber(messageType, callback);
+            AddSubscriber<TMessage>(callback);
         }
 
-        public void Subscribe(IEnumerable<MessageType> messageTypes, Action<IMessage> callback)
+        private void AddSubscriber<TMessage>(Action<IMessage> callback) where TMessage : IMessage
         {
-            if(messageTypes == null) return;
+            var messageType = typeof (TMessage);
 
-            foreach (var messageType in messageTypes)
-            {
-                AddSubscriber(messageType, callback);
-            }
-        }
-
-        private void AddSubscriber(MessageType messageType, Action<IMessage> callback)
-        {
             List<Action<IMessage>> queue;
+
             if (!_subscribers.TryGetValue(messageType, out queue))
             {
                 _subscribers[messageType] = new List<Action<IMessage>> { callback };
@@ -46,6 +40,11 @@ namespace RealEstate.Messaging
             }
 
             queue.Add(callback);            
+        }
+
+        private static Type GetMessageTypeFrom(Action<IMessage> callback)
+        {
+            return callback.GetMethodInfo().GetParameters()[0].ParameterType;
         }
     }
 }

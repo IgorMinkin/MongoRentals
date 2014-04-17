@@ -12,7 +12,7 @@ namespace RealEstate.Infrastructure.Filters
         {
             base.OnAuthorization(filterContext);
 
-            MessageBus.Publish(new TestMessage(this, MessageType.B, "hello from authorization filter"));
+            MessageBus.Publish(new TestMessage(this, "hello from authorization filter"));
 
             if(!filterContext.HttpContext.User.Identity.IsAuthenticated) return;
         }

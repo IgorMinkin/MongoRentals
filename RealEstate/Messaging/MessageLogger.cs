@@ -35,7 +35,7 @@ namespace RealEstate.Messaging
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     var cmd = new SqlCommand(InsertSqlCmd, conn);
-                    cmd.Parameters.AddWithValue("@MessageType", message.MessageType.ToString());
+                    cmd.Parameters.AddWithValue("@MessageType", message.GetType().ToString());
                     cmd.Parameters.AddWithValue("@Message", message.Message);
                     cmd.Parameters.AddWithValue("@DateCreated", DateTime.UtcNow);
 

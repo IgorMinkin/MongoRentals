@@ -37,7 +37,7 @@ namespace RealEstate.Controllers
         [ExtendedAuthFilter]
         public ActionResult Index(RentalsFilter filters)
         {
-            MessageBus.Publish(new TestMessage(this, MessageType.C, "hello from rental controller"));
+            MessageBus.Publish(new MessageB("message from rentals controller"));
 
             var rentals = FilterRentals(filters);
 

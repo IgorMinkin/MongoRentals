@@ -14,7 +14,7 @@ namespace RealEstate.Infrastructure.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            MessageBus.Publish(new TestMessage(this, MessageType.A, "hello from action filter"));
+            MessageBus.Publish(new MessageA("message from test action filter"));
             
             base.OnActionExecuting(filterContext);
         }

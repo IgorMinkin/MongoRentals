@@ -18,13 +18,9 @@ namespace RealEstate.Controllers
 
         private void AddListeners(MessageBus messageBus)
         {
-            messageBus.Subscribe(MessageType.A, (m) => Debug.WriteLine(m.Message));
-            messageBus.Subscribe(MessageType.B, (m) => Debug.WriteLine(m.Message));
-            messageBus.Subscribe(MessageType.C, (m) => Debug.WriteLine(m.Message));
-            messageBus.Subscribe(MessageType.B, (m) => { _logger.LogAsync(m); });
-            messageBus.Subscribe(MessageType.A, (m) => { _logger.LogAsync(m); });
-
-
+            messageBus.Subscribe<TestMessage>((m) => { _logger.LogAsync(m); });
+            messageBus.Subscribe<MessageA>((m) => { _logger.LogAsync(m); });
+            messageBus.Subscribe<MessageB>((m) => { _logger.LogAsync(m); });
         }
     }
 }

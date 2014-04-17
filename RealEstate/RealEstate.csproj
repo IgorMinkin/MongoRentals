@@ -176,6 +176,8 @@
     <Compile Include="Infrastructure\Filters\ExtendedAuthFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\TestActionFilter.cs" />
     <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\MessageA.cs" />
+    <Compile Include="Messaging\MessageB.cs" />
     <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="Messaging\MessageLogger.cs" />
     <Compile Include="Messaging\MessageType.cs" />

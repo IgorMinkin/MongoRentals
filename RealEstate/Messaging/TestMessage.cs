@@ -2,14 +2,11 @@
 {
     public class TestMessage : IMessage
     {
-        public TestMessage(object sender, MessageType messageType, string message)
+        public TestMessage(object sender, string message)
         {
-            MessageType = messageType;
             Sender = sender;
             Message = message;
         }
-
-        public MessageType MessageType { get; private set; }
 
         public object Sender { get; private set; }
 
